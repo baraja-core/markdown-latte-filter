@@ -1,0 +1,7 @@
+services:
+	markdown.renderer: Baraja\Markdown\CommonMarkRenderer
+	nette.latteFactory:
+		setup:
+			- addFilter(markdown, @Baraja\Markdown\Filter\Markdown)
+	- Baraja\Markdown\Filter\Markdown
+	- Baraja\Markdown\ConverterAccessor

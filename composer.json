@@ -1,0 +1,25 @@
+{
+	"name": "baraja-core/markdown-latte-filter",
+	"description": "Tools for content rendering.",
+	"homepage": "https://github.com/baraja-core/markdown-latte-filter",
+	"authors": [
+		{
+			"name": "Jan Barášek",
+			"homepage": "http://baraja.cz"
+		}
+	],
+	"require": {
+		"php": ">=7.1.0",
+		"latte/latte": "^2.5",
+		"nette/utils": "^3.0",
+		"nette/application": "^3.0",
+		"league/commonmark": "^0.16.0",
+		"webuni/commonmark-table-extension": "^0.9.0"
+	},
+	"autoload": {
+		"classmap": [
+			"src/"
+		]
+	},
+	"minimum-stability": "stable"
+}
