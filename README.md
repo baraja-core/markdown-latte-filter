@@ -3,6 +3,29 @@ Markdown Latte filter
 
 Tools for automatic work with markdown.
 
+How to install
+--------------
+
+Simple call Composer command:
+
+```shell
+composer require baraja-core/markdown-latte-filter
+```
+
+In project `common.neon` you must define Latte extension and services.
+
+Fully works example configuration is in `config.neon` file in this package:
+
+```yaml
+services:
+	markdown.renderer: Baraja\Markdown\CommonMarkRenderer
+	nette.latteFactory:
+		setup:
+			- addFilter(markdown, @Baraja\Markdown\Filter\Markdown)
+	- Baraja\Markdown\Filter\Markdown
+	- Baraja\Markdown\ConverterAccessor
+```
+
 Latte filter
 ------------
 
