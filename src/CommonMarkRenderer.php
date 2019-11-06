@@ -11,6 +11,14 @@ class CommonMarkRenderer extends BaseRenderer
 {
 
 	/**
+	 * @var string[]
+	 */
+	private static $helpers = [
+		'\(' => 'LATEX-L',
+		'\)' => 'LATEX-R',
+	];
+
+	/**
 	 * @var ConverterAccessor
 	 */
 	private $commonMarkConverter;
@@ -35,7 +43,9 @@ class CommonMarkRenderer extends BaseRenderer
 
 		if (isset($cache[$content]) === false) {
 			$html = $this->process(
-				$this->commonMarkConverter->get()->convertToHtml($content)
+				$this->commonMarkConverter->get()->convertToHtml(
+					$this->beforeProcess($content)
+				)
 			);
 
 			$html = preg_replace_callback(
@@ -43,13 +53,39 @@ class CommonMarkRenderer extends BaseRenderer
 				function (array $match): string {
 					return 'src="' . Helpers::getBaseUrl() . '/' . $match[1] . '"';
 				},
-				$html
+				$this->afterProcess($html)
 			);
 
 			$cache[$content] = $html;
 		}
 
 		return $cache[$content];
+	}
+
+	/**
+	 * @param string $haystack
+	 * @return string
+	 */
+	private function beforeProcess(string $haystack): string
+	{
+		foreach (self::$helpers as $key => $value) {
+			$haystack = str_replace($key, $value, $haystack);
+		}
+
+		return $haystack;
+	}
+
+	/**
+	 * @param string $haystack
+	 * @return string
+	 */
+	private function afterProcess(string $haystack): string
+	{
+		foreach (self::$helpers as $key => $value) {
+			$haystack = str_replace($value, $key, $haystack);
+		}
+
+		return $haystack;
 	}
 
 }
