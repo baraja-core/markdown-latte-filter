@@ -50,7 +50,7 @@ abstract class BaseRenderer implements Renderer
 			$content
 		);
 
-		$content = (string) preg_replace_callback(
+		$content = (string) preg_replace_callback( // <a href="..."> HTML links
 			'/ href="\/(?<link>[^"]*)"/',
 			function (array $match): string {
 				return ' href="' . Helpers::getBaseUrl() . '/' . $match['link'] . '"';
@@ -58,7 +58,7 @@ abstract class BaseRenderer implements Renderer
 			$content
 		);
 
-		$content = (string) preg_replace_callback(
+		$content = (string) preg_replace_callback( // n:href="..." Nette links
 			'/n:href="(?<link>[^"]*)"/',
 			function (array $match): string {
 				try {
@@ -77,31 +77,36 @@ abstract class BaseRenderer implements Renderer
 			$content
 		);
 
-		$content = (string) preg_replace_callback(
+		$content = (string) preg_replace_callback( // Translate macros
 			'/(\{_\})(?<haystack>.+?)(\{\/_\})/', // {_}hello{/_}
 			function (array $match): string {
-				if ($this->translator === null) {
-					MarkdownException::translatorDoesNotSet();
-				}
-
-				return $this->translator->translate($match['haystack']);
+				return $this->getTranslator()->translate($match['haystack']);
 			},
 			$content
 		);
 
-		$content = (string) preg_replace_callback(
+		$content = (string) preg_replace_callback( // Alternative translate macros
 			'/\{_(?:(?<haystack>.*?))\}/', // {_hello}, {_'hello'}, {_"hello"}
 			function (array $match): string {
-				if ($this->translator === null) {
-					MarkdownException::translatorDoesNotSet();
-				}
-
-				return $this->translator->translate(trim($match['haystack'], '\'"'));
+				return $this->getTranslator()->translate(trim($match['haystack'], '\'"'));
 			},
 			$content
 		);
 
 		return $content;
+	}
+
+	/**
+	 * @return ITranslator
+	 * @throws MarkdownException
+	 */
+	private function getTranslator(): ITranslator
+	{
+		if ($this->translator === null) {
+			MarkdownException::translatorDoesNotSet();
+		}
+
+		return $this->translator;
 	}
 
 }
