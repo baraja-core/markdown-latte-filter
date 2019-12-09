@@ -49,7 +49,7 @@ class CommonMarkRenderer extends BaseRenderer
 			);
 
 			$html = preg_replace_callback(
-				'/src="\/?(static\/([^"]+))"/',
+				'/src="\/?((?:img|static)\/([^"]+))"/',
 				function (array $match): string {
 					return 'src="' . Helpers::getBaseUrl() . '/' . $match[1] . '"';
 				},
