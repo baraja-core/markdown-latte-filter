@@ -18,12 +18,12 @@ Fully works example configuration is in `config.neon` file in this package:
 
 ```yaml
 services:
-	markdown.renderer: Baraja\Markdown\CommonMarkRenderer
-	nette.latteFactory:
-		setup:
-			- addFilter(markdown, @Baraja\Markdown\Filter\Markdown)
-	- Baraja\Markdown\Filter\Markdown
-	- Baraja\Markdown\ConverterAccessor
+   markdown.renderer: Baraja\Markdown\CommonMarkRenderer
+   nette.latteFactory:
+      setup:
+         - addFilter(markdown, @Baraja\Markdown\Filter\Markdown)
+   - Baraja\Markdown\Filter\Markdown
+   - Baraja\Markdown\ConverterAccessor
 ```
 
 Latte filter
@@ -39,7 +39,7 @@ That will generated `<div>` automatically with the content:
 
 ```html
 <div class="markdown">
-    Final content...
+   Final content...
 </div>
 ```
 
