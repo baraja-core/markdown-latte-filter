@@ -57,7 +57,7 @@ abstract class BaseRenderer implements Renderer
 							$route->getPresenterName(true) . ':' . $route->getActionName(),
 							$route->getParams()
 						) . '"';
-				} catch (InvalidLinkException|InvalidRouteException $e) {
+				} catch (InvalidLinkException | InvalidRouteException $e) {
 					trigger_error($e->getMessage());
 
 					return 'href="#INVALID_LINK"';

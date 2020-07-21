@@ -10,6 +10,8 @@ use Nette\Utils\Strings;
 
 class Route
 {
+	use SmartObject;
+
 	public const DEFAULT_PRESENTER = 'Homepage';
 
 	public const DEFAULT_ACTION = 'default';
@@ -17,8 +19,6 @@ class Route
 	public const DEFAULT_ROUTE = 'Homepage:default';
 
 	private const PATTERN = '/^(?:(?<module>[A-Za-z]*):)?(?<presenter>[A-Za-z]*):(?<action>[A-Za-z]+)(?<params>\,*?.*?)$/';
-
-	use SmartObject;
 
 	/** @var string|null */
 	private $module;
@@ -57,10 +57,10 @@ class Route
 
 	/**
 	 * @param string $pattern in format "[Module:]Presenter:action, id => 123, param => value, foo => bar"
-	 * @return Route
+	 * @return self
 	 * @throws InvalidRouteException
 	 */
-	public static function createByPattern(string $pattern): Route
+	public static function createByPattern(string $pattern): self
 	{
 		if (!preg_match(self::PATTERN, trim($pattern, ':'), $patternParser)) {
 			InvalidRouteException::pattern($pattern);
