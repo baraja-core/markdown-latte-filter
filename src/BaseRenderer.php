@@ -12,36 +12,25 @@ use Nette\Localization\ITranslator;
 abstract class BaseRenderer implements Renderer
 {
 
-	/**
-	 * @var LinkGenerator
-	 */
+	/** @var LinkGenerator */
 	private $linkGenerator;
 
-	/**
-	 * @var ITranslator|null
-	 */
+	/** @var ITranslator|null */
 	private $translator;
 
-	/**
-	 * @param LinkGenerator $linkGenerator
-	 */
+
 	public function __construct(LinkGenerator $linkGenerator)
 	{
 		$this->linkGenerator = $linkGenerator;
 	}
 
-	/**
-	 * @param ITranslator $translator
-	 */
+
 	public function setTranslator(ITranslator $translator): void
 	{
 		$this->translator = $translator;
 	}
 
-	/**
-	 * @param string $content
-	 * @return string
-	 */
+
 	protected function process(string $content): string
 	{
 		$content = (string) preg_replace(
@@ -96,6 +85,7 @@ abstract class BaseRenderer implements Renderer
 		return $content;
 	}
 
+
 	/**
 	 * @return ITranslator
 	 * @throws MarkdownException
@@ -108,5 +98,4 @@ abstract class BaseRenderer implements Renderer
 
 		return $this->translator;
 	}
-
 }

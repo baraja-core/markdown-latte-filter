@@ -10,38 +10,31 @@ use Nette\Utils\Strings;
 
 class Route
 {
-
 	public const DEFAULT_PRESENTER = 'Homepage';
+
 	public const DEFAULT_ACTION = 'default';
+
 	public const DEFAULT_ROUTE = 'Homepage:default';
+
 	private const PATTERN = '/^(?:(?<module>[A-Za-z]*):)?(?<presenter>[A-Za-z]*):(?<action>[A-Za-z]+)(?<params>\,*?.*?)$/';
 
 	use SmartObject;
 
-	/**
-	 * @var string|null
-	 */
+	/** @var string|null */
 	private $module;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $presenterName;
 
-	/**
-	 * @var string
-	 */
+	/** @var string */
 	private $actionName;
 
-	/**
-	 * @var string|null
-	 */
+	/** @var string|null */
 	private $id;
 
-	/**
-	 * @var string[]
-	 */
+	/** @var string[] */
 	private $params;
+
 
 	/**
 	 * @param string|null $module
@@ -50,22 +43,17 @@ class Route
 	 * @param string|null $id
 	 * @param mixed[] $params
 	 */
-	public function __construct(
-		string $module = null,
-		string $presenter = self::DEFAULT_PRESENTER,
-		string $action = self::DEFAULT_ACTION,
-		string $id = null,
-		array $params = []
-	)
+	public function __construct(string $module = null, string $presenter = self::DEFAULT_PRESENTER, string $action = self::DEFAULT_ACTION, string $id = null, array $params = [])
 	{
-		$this->module = $module ? : null;
-		$this->presenterName = trim(Strings::firstUpper($presenter ? : self::DEFAULT_PRESENTER), '/');
-		$this->actionName = trim(Strings::firstLower($action ? : self::DEFAULT_ACTION), '/');
-		$this->presenterName = $this->presenterName ? : self::DEFAULT_PRESENTER;
-		$this->actionName = $this->actionName ? : self::DEFAULT_ACTION;
+		$this->module = $module ?: null;
+		$this->presenterName = trim(Strings::firstUpper($presenter ?: self::DEFAULT_PRESENTER), '/');
+		$this->actionName = trim(Strings::firstLower($action ?: self::DEFAULT_ACTION), '/');
+		$this->presenterName = $this->presenterName ?: self::DEFAULT_PRESENTER;
+		$this->actionName = $this->actionName ?: self::DEFAULT_ACTION;
 		$this->id = $id !== '' && $id !== null ? trim($id, '/') : null;
 		$this->params = $params;
 	}
+
 
 	/**
 	 * @param string $pattern in format "[Module:]Presenter:action, id => 123, param => value, foo => bar"
@@ -103,13 +91,12 @@ class Route
 		);
 	}
 
-	/**
-	 * @return string
-	 */
+
 	public function __toString(): string
 	{
 		return $this->toString();
 	}
+
 
 	/**
 	 * Return formats:
@@ -135,18 +122,13 @@ class Route
 		return $return;
 	}
 
-	/**
-	 * @return string|null
-	 */
+
 	public function getModule(): ?string
 	{
 		return $this->module;
 	}
 
-	/**
-	 * @param bool $withModule
-	 * @return string
-	 */
+
 	public function getPresenterName(bool $withModule = true): string
 	{
 		if ($withModule === true) {
@@ -160,21 +142,18 @@ class Route
 		return $this->presenterName;
 	}
 
-	/**
-	 * @return string
-	 */
+
 	public function getActionName(): string
 	{
 		return $this->actionName;
 	}
 
-	/**
-	 * @return bool
-	 */
+
 	public function isDefault(): bool
 	{
 		return $this->getActionName() === self::DEFAULT_ACTION;
 	}
+
 
 	/**
 	 * @return mixed
@@ -185,6 +164,7 @@ class Route
 			? (int) $this->id
 			: $this->id;
 	}
+
 
 	/**
 	 * @return mixed[]
@@ -202,6 +182,7 @@ class Route
 		return $return;
 	}
 
+
 	/**
 	 * Finds whether a value is an integer.
 	 *
@@ -212,5 +193,4 @@ class Route
 	{
 		return \is_int($value) || (\is_string($value) && preg_match('#^-?[\d]+\z#', $value));
 	}
-
 }

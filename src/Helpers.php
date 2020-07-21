@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace Baraja\Markdown;
 
 
-use Nette\StaticClass;
-
-class Helpers
+final class Helpers
 {
 
-	use StaticClass;
+	/** @throws \Error */
+	public function __construct()
+	{
+		throw new \Error('Class ' . get_class($this) . ' is static and cannot be instantiated.');
+	}
+
 
 	/**
 	 * Return current absolute URL.
@@ -28,6 +31,7 @@ class Helpers
 			. '://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	}
 
+
 	/**
 	 * @return string|null
 	 */
@@ -38,22 +42,17 @@ class Helpers
 		if ($return !== null) {
 			return $return;
 		}
-
-		$currentUrl = self::getCurrentUrl();
-
-		if ($currentUrl !== null) {
+		if (($currentUrl = self::getCurrentUrl()) !== null) {
 			if (preg_match('/^(https?:\/\/.+)\/www\//', $currentUrl, $localUrlParser)) {
 				$return = $localUrlParser[0];
 			} elseif (preg_match('/^(https?:\/\/[^\/]+)/', $currentUrl, $publicUrlParser)) {
 				$return = $publicUrlParser[1];
 			}
 		}
-
 		if ($return !== null) {
 			$return = rtrim($return, '/');
 		}
 
 		return $return;
 	}
-
 }

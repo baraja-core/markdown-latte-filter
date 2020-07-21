@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Baraja\Markdown;
 
 
-class MarkdownException extends \Exception
+final class MarkdownException extends \Exception
 {
 
 	/**
@@ -13,9 +13,6 @@ class MarkdownException extends \Exception
 	 */
 	public static function translatorDoesNotSet(): void
 	{
-		throw new self(
-			'Translator service does not set. Did you call ->setTranslator()?'
-		);
+		throw new self('Translator service does not set. Did you call ->setTranslator()?');
 	}
-
 }

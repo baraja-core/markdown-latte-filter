@@ -7,36 +7,26 @@ namespace Baraja\Markdown;
 
 use Nette\Application\LinkGenerator;
 
-class CommonMarkRenderer extends BaseRenderer
+final class CommonMarkRenderer extends BaseRenderer
 {
 
-	/**
-	 * @var string[]
-	 */
+	/** @var string[] */
 	private static $helpers = [
 		'\(' => 'LATEX-L',
 		'\)' => 'LATEX-R',
 	];
 
-	/**
-	 * @var ConverterAccessor
-	 */
+	/** @var ConverterAccessor */
 	private $commonMarkConverter;
 
-	/**
-	 * @param ConverterAccessor $converterAccessor
-	 * @param LinkGenerator $linkGenerator
-	 */
+
 	public function __construct(ConverterAccessor $converterAccessor, LinkGenerator $linkGenerator)
 	{
 		parent::__construct($linkGenerator);
 		$this->commonMarkConverter = $converterAccessor;
 	}
 
-	/**
-	 * @param string $content
-	 * @return string
-	 */
+
 	public function render(string $content): string
 	{
 		static $cache = [];
@@ -62,10 +52,7 @@ class CommonMarkRenderer extends BaseRenderer
 		return $cache[$content];
 	}
 
-	/**
-	 * @param string $haystack
-	 * @return string
-	 */
+
 	private function beforeProcess(string $haystack): string
 	{
 		foreach (self::$helpers as $key => $value) {
@@ -75,10 +62,7 @@ class CommonMarkRenderer extends BaseRenderer
 		return $haystack;
 	}
 
-	/**
-	 * @param string $haystack
-	 * @return string
-	 */
+
 	private function afterProcess(string $haystack): string
 	{
 		foreach (self::$helpers as $key => $value) {
@@ -87,5 +71,4 @@ class CommonMarkRenderer extends BaseRenderer
 
 		return $haystack;
 	}
-
 }

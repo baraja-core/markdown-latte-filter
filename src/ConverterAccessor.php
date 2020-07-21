@@ -11,12 +11,8 @@ use League\CommonMark\Environment;
 use League\CommonMark\HtmlRenderer;
 use Webuni\CommonMark\TableExtension\TableExtension;
 
-class ConverterAccessor
+final class ConverterAccessor
 {
-
-	/**
-	 * @return Converter
-	 */
 	public function get(): Converter
 	{
 		static $cache;
@@ -28,18 +24,14 @@ class ConverterAccessor
 		return $cache;
 	}
 
-	/**
-	 * @return Converter
-	 */
+
 	private function createInstance(): Converter
 	{
-		$environment = Environment::createCommonMarkEnvironment();
-		$environment->addExtension(new TableExtension);
+		$environment = Environment::createCommonMarkEnvironment()->addExtension(new TableExtension);
 
 		return new Converter(
 			new DocParser($environment),
 			new HtmlRenderer($environment)
 		);
 	}
-
 }

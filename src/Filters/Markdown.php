@@ -8,21 +8,18 @@ namespace Baraja\Markdown\Filter;
 use Baraja\Markdown\CommonMarkRenderer;
 use Nette\Utils\Html;
 
-class Markdown
+final class Markdown
 {
 
-	/**
-	 * @var CommonMarkRenderer
-	 */
+	/** @var CommonMarkRenderer */
 	private $commonMarkRenderer;
 
-	/**
-	 * @param CommonMarkRenderer $commonMarkRenderer
-	 */
+
 	public function __construct(CommonMarkRenderer $commonMarkRenderer)
 	{
 		$this->commonMarkRenderer = $commonMarkRenderer;
 	}
+
 
 	/**
 	 * @param string|object $haystack
@@ -38,5 +35,4 @@ class Markdown
 			$this->commonMarkRenderer->render($haystack)
 		);
 	}
-
 }

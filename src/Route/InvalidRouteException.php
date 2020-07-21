@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Baraja\Markdown;
 
 
-class InvalidRouteException extends \Exception
+final class InvalidRouteException extends \Exception
 {
 
 	/**
@@ -19,5 +19,4 @@ class InvalidRouteException extends \Exception
 			. 'use format [Presenter:action] or [Module:Presenter:action].'
 		);
 	}
-
 }
