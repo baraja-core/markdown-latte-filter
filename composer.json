@@ -13,7 +13,8 @@
 		"latte/latte": "^2.5",
 		"nette/utils": "^3.0",
 		"nette/application": "^3.0",
-		"league/commonmark": "0.18.3",
+		"nette/di": "^3.0",
+		"league/commonmark": "^0.18.3",
 		"webuni/commonmark-table-extension": "^0.9.0"
 	},
 	"require-dev": {
