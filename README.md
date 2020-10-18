@@ -9,21 +9,16 @@ How to install
 Simple call Composer command:
 
 ```shell
-composer require baraja-core/markdown-latte-filter
+$ composer require baraja-core/markdown-latte-filter
 ```
 
 In project `common.neon` you must define Latte extension and services.
 
-Fully works example configuration is in `config.neon` file in this package:
+Fully works example configuration is in `common.neon` file in this package:
 
 ```yaml
-services:
-   markdown.renderer: Baraja\Markdown\CommonMarkRenderer
-   nette.latteFactory:
-      setup:
-         - addFilter(markdown, @Baraja\Markdown\Filter\Markdown)
-   - Baraja\Markdown\Filter\Markdown
-   - Baraja\Markdown\ConverterAccessor
+extensions:
+	markdownLatteFilter: Baraja\Markdown\MarkdownLatteFilterExtension
 ```
 
 Latte filter
