@@ -5,13 +5,10 @@ declare(strict_types=1);
 namespace Baraja\Markdown;
 
 
-use Nette\SmartObject;
 use Nette\Utils\Strings;
 
-class Route
+final class Route
 {
-	use SmartObject;
-
 	public const DEFAULT_PRESENTER = 'Homepage';
 
 	public const DEFAULT_ACTION = 'default';
@@ -37,10 +34,6 @@ class Route
 
 
 	/**
-	 * @param string|null $module
-	 * @param string $presenter
-	 * @param string $action
-	 * @param string|null $id
 	 * @param mixed[] $params
 	 */
 	public function __construct(string $module = null, string $presenter = self::DEFAULT_PRESENTER, string $action = self::DEFAULT_ACTION, string $id = null, array $params = [])
@@ -58,17 +51,15 @@ class Route
 	/**
 	 * @param string $pattern in format "[Module:]Presenter:action, id => 123, param => value, foo => bar"
 	 * @return self
-	 * @throws InvalidRouteException
 	 */
 	public static function createByPattern(string $pattern): self
 	{
 		if (!preg_match(self::PATTERN, trim($pattern, ':'), $patternParser)) {
-			InvalidRouteException::pattern($pattern);
+			throw new \InvalidArgumentException('Invalid link "' . htmlspecialchars($pattern) . '". Did you mean format "Presenter:action" or "Module:Presenter:action"?');
 		}
 
-		$params = [];
 		$id = null;
-
+		$params = [];
 		foreach (explode(',', trim($patternParser['params'], ', ')) as $param) {
 			if (preg_match('/^(?<key>[\'"]?\w+[\'"]?)\s*=>\s*(?<value>.*)$/', trim($param), $paramParser)) {
 				$paramKey = trim($paramParser['key'], '\'"');
@@ -103,8 +94,6 @@ class Route
 	 *    Presenter:action
 	 *    Presenter:action, id => 123
 	 *    Presenter:action, id => 123, param => value, foo => bar
-	 *
-	 * @return string
 	 */
 	public function toString(): string
 	{

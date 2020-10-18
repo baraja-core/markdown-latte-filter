@@ -30,7 +30,6 @@ final class CommonMarkRenderer extends BaseRenderer
 	public function render(string $content): string
 	{
 		static $cache = [];
-
 		if (isset($cache[$content]) === false) {
 			$html = $this->process(
 				$this->commonMarkConverter->get()->convertToHtml(
@@ -40,7 +39,7 @@ final class CommonMarkRenderer extends BaseRenderer
 
 			$html = preg_replace_callback(
 				'/src="\/?((?:img|static)\/([^"]+))"/',
-				function (array $match): string {
+				static function (array $match): string {
 					return 'src="' . Helpers::getBaseUrl() . '/' . $match[1] . '"';
 				},
 				$this->afterProcess($html)

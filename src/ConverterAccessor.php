@@ -16,7 +16,6 @@ final class ConverterAccessor
 	public function get(): Converter
 	{
 		static $cache;
-
 		if ($cache === null) {
 			$cache = $this->createInstance();
 		}

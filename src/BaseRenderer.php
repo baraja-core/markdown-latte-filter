@@ -41,7 +41,7 @@ abstract class BaseRenderer implements Renderer
 
 		$content = (string) preg_replace_callback( // <a href="..."> HTML links
 			'/ href="\/(?<link>[^"]*)"/',
-			function (array $match): string {
+			static function (array $match): string {
 				return ' href="' . Helpers::getBaseUrl() . '/' . $match['link'] . '"';
 			},
 			$content
@@ -57,7 +57,7 @@ abstract class BaseRenderer implements Renderer
 							$route->getPresenterName(true) . ':' . $route->getActionName(),
 							$route->getParams()
 						) . '"';
-				} catch (InvalidLinkException | InvalidRouteException $e) {
+				} catch (InvalidLinkException | \InvalidArgumentException $e) {
 					trigger_error($e->getMessage());
 
 					return 'href="#INVALID_LINK"';
@@ -86,14 +86,10 @@ abstract class BaseRenderer implements Renderer
 	}
 
 
-	/**
-	 * @return ITranslator
-	 * @throws MarkdownException
-	 */
 	private function getTranslator(): ITranslator
 	{
 		if ($this->translator === null) {
-			MarkdownException::translatorDoesNotSet();
+			throw new \RuntimeException('Translator service does not set. Did you call ->setTranslator()?');
 		}
 
 		return $this->translator;

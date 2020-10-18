@@ -18,8 +18,6 @@ final class Helpers
 	/**
 	 * Return current absolute URL.
 	 * Return null, if current URL does not exist (for example in CLI mode).
-	 *
-	 * @return string|null
 	 */
 	public static function getCurrentUrl(): ?string
 	{
@@ -32,9 +30,6 @@ final class Helpers
 	}
 
 
-	/**
-	 * @return string|null
-	 */
 	public static function getBaseUrl(): ?string
 	{
 		static $return;
