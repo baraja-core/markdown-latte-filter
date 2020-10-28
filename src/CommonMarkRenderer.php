@@ -11,13 +11,12 @@ final class CommonMarkRenderer extends BaseRenderer
 {
 
 	/** @var string[] */
-	private static $helpers = [
+	private static array $helpers = [
 		'\(' => 'LATEX-L',
 		'\)' => 'LATEX-R',
 	];
 
-	/** @var ConverterAccessor */
-	private $commonMarkConverter;
+	private ConverterAccessor $commonMarkConverter;
 
 
 	public function __construct(ConverterAccessor $converterAccessor, LinkGenerator $linkGenerator)

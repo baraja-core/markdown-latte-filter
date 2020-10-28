@@ -11,12 +11,9 @@ use Nette\Localization\ITranslator;
 
 abstract class BaseRenderer implements Renderer
 {
+	private LinkGenerator $linkGenerator;
 
-	/** @var LinkGenerator */
-	private $linkGenerator;
-
-	/** @var ITranslator|null */
-	private $translator;
+	private ?ITranslator $translator;
 
 
 	public function __construct(LinkGenerator $linkGenerator)

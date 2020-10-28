@@ -17,20 +17,16 @@ final class Route
 
 	private const PATTERN = '/^(?:(?<module>[A-Za-z]*):)?(?<presenter>[A-Za-z]*):(?<action>[A-Za-z]+)(?<params>\,*?.*?)$/';
 
-	/** @var string|null */
-	private $module;
+	private ?string $module;
 
-	/** @var string */
-	private $presenterName;
+	private string $presenterName;
 
-	/** @var string */
-	private $actionName;
+	private string $actionName;
 
-	/** @var string|null */
-	private $id;
+	private ?string $id;
 
 	/** @var string[] */
-	private $params;
+	private array $params;
 
 
 	/**
