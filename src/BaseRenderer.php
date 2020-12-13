@@ -15,6 +15,8 @@ abstract class BaseRenderer implements Renderer
 
 	private ?ITranslator $translator;
 
+	private ?string $baseUrl = null;
+
 
 	public function __construct(LinkGenerator $linkGenerator)
 	{
@@ -28,18 +30,25 @@ abstract class BaseRenderer implements Renderer
 	}
 
 
+	public function setBaseUrl(string $baseUrl): void
+	{
+		$this->baseUrl = $baseUrl;
+	}
+
+
 	protected function process(string $content): string
 	{
+		$baseUrl = $this->resolveBaseUrl();
 		$content = (string) preg_replace(
 			'/\{\$(?:basePath|baseUrl)\}\/?/',
-			rtrim(Helpers::getBaseUrl(), '/') . '/',
+			rtrim($baseUrl, '/') . '/',
 			$content
 		);
 
 		$content = (string) preg_replace_callback( // <a href="..."> HTML links
 			'/ href="\/(?<link>[^"]*)"/',
-			static function (array $match): string {
-				return ' href="' . Helpers::getBaseUrl() . '/' . $match['link'] . '"';
+			static function (array $match) use ($baseUrl): string {
+				return ' href="' . $baseUrl . '/' . $match['link'] . '"';
 			},
 			$content
 		);
@@ -80,6 +89,23 @@ abstract class BaseRenderer implements Renderer
 		);
 
 		return $content;
+	}
+
+
+	protected function resolveBaseUrl(): string
+	{
+		if ($this->baseUrl === null) {
+			if (($baseUrl = Helpers::getBaseUrl()) === null) {
+				throw new \LogicException(
+					'BaseUrl can not be null.' . "\n"
+					. 'To solve this issue: BaseUrl is automatically detected according to the current HTTP request. '
+					. 'In CLI mode (when there is no HTTP request), you need to manually define the BaseUrl by the setBaseUrl() method.'
+				);
+			}
+			$this->baseUrl = $baseUrl;
+		}
+
+		return $this->baseUrl;
 	}
 
 
