@@ -25,8 +25,15 @@ final class Markdown
 	 */
 	public function __invoke($haystack): Html
 	{
-		if (is_object($haystack) && method_exists($haystack, '__toString')) {
-			$haystack = (string) $haystack;
+		if (is_object($haystack)) {
+			if (method_exists($haystack, '__toString')) {
+				$haystack = (string) $haystack;
+			} else {
+				throw new \InvalidArgumentException(
+					'Value can not be converted to string, '
+					. 'because object "' . \get_class($haystack) . '" does not contain "__toString" method.'
+				);
+			}
 		}
 
 		return Html::el('div', ['class' => 'markdown'])->setHtml(
