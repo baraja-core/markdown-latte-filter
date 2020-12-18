@@ -18,7 +18,7 @@ Fully works example configuration is in `common.neon` file in this package:
 
 ```yaml
 extensions:
-	markdownLatteFilter: Baraja\Markdown\MarkdownLatteFilterExtension
+    markdownLatteFilter: Baraja\Markdown\MarkdownLatteFilterExtension
 ```
 
 Latte filter
