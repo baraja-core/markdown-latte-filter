@@ -85,9 +85,9 @@ abstract class BaseRenderer implements Renderer
 		);
 
 		$content = (string) preg_replace_callback( // URL inside text
-			'/(?i)\b(?:(?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'\\\\".,<>?«»“”‘’]))/u',
+			'/(?:\s|^)(?i)\b(?:(?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'\\\\".,<>?«»“”‘’]))/u',
 			function (array $match) use ($baseUrl): string {
-				return $this->renderLink($match[0] ?? '', $baseUrl);
+				return $this->renderLink(trim($match[0] ?? ''), $baseUrl);
 			},
 			$content
 		);
