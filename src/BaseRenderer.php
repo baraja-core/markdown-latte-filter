@@ -13,7 +13,7 @@ abstract class BaseRenderer implements Renderer
 {
 	private LinkGenerator $linkGenerator;
 
-	private ?ITranslator $translator;
+	private ?ITranslator $translator = null;
 
 	private ?string $baseUrl = null;
 
