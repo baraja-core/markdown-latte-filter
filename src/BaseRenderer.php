@@ -143,7 +143,7 @@ abstract class BaseRenderer implements Renderer
 		return ' <a href="' . Helpers::escapeHtmlAttr($safeUrl) . '"'
 			. ($external ? ' target="_blank" rel="nofollow"' : '')
 			. '>' . html_entity_decode(
-				preg_replace_callback('/^(https?:\/\/[^\/]+)(.*)$/', fn (array $part): string => $part[1] . Strings::truncate($part[2], 32), strip_tags($url)),
+				(string) preg_replace_callback('/^(https?:\/\/[^\/]+)(.*)$/', fn (array $part): string => $part[1] . Strings::truncate($part[2], 32), strip_tags($url)),
 				ENT_QUOTES | ENT_HTML5, 'UTF-8')
 			. '</a>';
 	}
