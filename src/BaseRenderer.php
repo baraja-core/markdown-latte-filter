@@ -8,6 +8,7 @@ namespace Baraja\Markdown;
 use Nette\Application\LinkGenerator;
 use Nette\Application\UI\InvalidLinkException;
 use Nette\Localization\ITranslator;
+use Nette\Utils\Strings;
 
 abstract class BaseRenderer implements Renderer
 {
@@ -139,9 +140,12 @@ abstract class BaseRenderer implements Renderer
 			trigger_error('Given URL is not safe, because string "' . $url . '" given.');
 		}
 
-		return '<a href="' . Helpers::escapeHtmlAttr($safeUrl) . '"'
+		return ' <a href="' . Helpers::escapeHtmlAttr($safeUrl) . '"'
 			. ($external ? ' target="_blank" rel="nofollow"' : '')
-			. '>' . html_entity_decode(strip_tags($url), ENT_QUOTES | ENT_HTML5, 'UTF-8') . '</a>';
+			. '>' . html_entity_decode(
+				preg_replace_callback('/^(https?:\/\/[^\/]+)(.*)$/', fn (array $part): string => $part[1] . Strings::truncate($part[2], 32), strip_tags($url)),
+				ENT_QUOTES | ENT_HTML5, 'UTF-8')
+			. '</a>';
 	}
 
 
