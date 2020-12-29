@@ -57,13 +57,17 @@ final class Helpers
 	 */
 	public static function safeUrl(string $s): string
 	{
+		if (strncmp($s, 'http', 4) !== 0) {
+			$s = 'http://' . $s;
+		}
+
 		return preg_match('~^(?:(?:https?|ftp)://[^@]+(?:/.*)?|(?:mailto|tel|sms):.+|[/?#].*|[^:]+)$~Di', $s) ? $s : '';
 	}
 
 
 	public static function parseDomain(string $url): string
 	{
-		$domainPattern = '/^https?:\/\/(?<subdomain>[^\/]*?)(?<domain>localhost|(?:\d{1,3}\.?){4}|(?:(?:[a-z0-9-]+)\.(?:[a-z0-9-]+)))(?:\/|$)/';
+		$domainPattern = '/^(?:https?:\/\/)?(?<subdomain>[^\/]*?)(?<domain>localhost|(?:\d{1,3}\.?){4}|(?:(?:[a-z0-9-]+)\.(?:[a-z0-9-]+)))(?:\/|$)/';
 		if (preg_match($domainPattern, $url, $parser)) {
 			return (string) ($parser['domain'] ?? '');
 		}
