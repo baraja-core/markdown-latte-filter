@@ -86,9 +86,13 @@ abstract class BaseRenderer implements Renderer
 		);
 
 		$content = (string) preg_replace_callback( // URL inside text
-			'/(?:\s|^)(?i)\b(?:(?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'\\\\".,<>?«»“”‘’]))/u',
+			'/(.|\n|^)((?i)\b(?:(?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'\\\\".,<>?«»“”‘’])))/u',
 			function (array $match) use ($baseUrl): string {
-				return $this->renderLink(trim($match[0] ?? ''), $baseUrl);
+				if ($match[1] === '"' || $match[1] === '\'') { // ignore inside <a href=" attribute
+					return $match[0];
+				}
+
+				return $match[1] . $this->renderLink(htmlspecialchars_decode(trim($match[2] ?? '')), $baseUrl);
 			},
 			$content
 		);
@@ -140,7 +144,7 @@ abstract class BaseRenderer implements Renderer
 			trigger_error('Given URL is not safe, because string "' . $url . '" given.');
 		}
 
-		return ' <a href="' . Helpers::escapeHtmlAttr($safeUrl) . '"'
+		return '<a href="' . Helpers::escapeHtmlAttr($safeUrl) . '"'
 			. ($external ? ' target="_blank" rel="nofollow"' : '')
 			. '>' . html_entity_decode(
 				(string) preg_replace_callback('/^(https?:\/\/[^\/]+)(.*)$/', fn (array $part): string => $part[1] . Strings::truncate($part[2], 32), strip_tags($url)),
