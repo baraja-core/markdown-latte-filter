@@ -5,15 +5,34 @@ declare(strict_types=1);
 namespace Baraja\Markdown;
 
 
-use League\CommonMark\Converter;
-use League\CommonMark\DocParser;
+use League\CommonMark\CommonMarkConverter;
 use League\CommonMark\Environment;
-use League\CommonMark\HtmlRenderer;
-use Webuni\CommonMark\TableExtension\TableExtension;
+use League\CommonMark\Extension\ExtensionInterface;
+use League\CommonMark\Extension\Table\TableExtension;
 
 final class ConverterAccessor
 {
-	public function get(): Converter
+	/** @var mixed[] */
+	private array $config;
+
+	/** @var ExtensionInterface[] */
+	private array $extensions;
+
+
+	/**
+	 * @param mixed[] $config
+	 * @param ExtensionInterface[] $extensions
+	 */
+	public function __construct(array $config = [], array $extensions = [])
+	{
+		$this->config = $config;
+		$this->extensions = array_merge($extensions, [
+			new TableExtension,
+		]);
+	}
+
+
+	public function get(): CommonMarkConverter
 	{
 		static $cache;
 		if ($cache === null) {
@@ -24,13 +43,13 @@ final class ConverterAccessor
 	}
 
 
-	private function createInstance(): Converter
+	private function createInstance(): CommonMarkConverter
 	{
-		$environment = Environment::createCommonMarkEnvironment()->addExtension(new TableExtension);
+		$environment = Environment::createCommonMarkEnvironment();
+		foreach ($this->extensions as $extension) {
+			$environment->addExtension($extension);
+		}
 
-		return new Converter(
-			new DocParser($environment),
-			new HtmlRenderer($environment)
-		);
+		return new CommonMarkConverter($this->config, $environment);
 	}
 }
