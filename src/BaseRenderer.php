@@ -7,14 +7,14 @@ namespace Baraja\Markdown;
 
 use Nette\Application\LinkGenerator;
 use Nette\Application\UI\InvalidLinkException;
-use Nette\Localization\ITranslator;
+use Nette\Localization\Translator;
 use Nette\Utils\Strings;
 
 abstract class BaseRenderer implements Renderer
 {
 	private LinkGenerator $linkGenerator;
 
-	private ?ITranslator $translator = null;
+	private ?Translator $translator;
 
 	private ?string $baseUrl = null;
 
@@ -22,13 +22,14 @@ abstract class BaseRenderer implements Renderer
 	private array $safeDomains = ['baraja.cz'];
 
 
-	public function __construct(LinkGenerator $linkGenerator)
+	public function __construct(LinkGenerator $linkGenerator, ?Translator $translator = null)
 	{
 		$this->linkGenerator = $linkGenerator;
+		$this->translator = $translator;
 	}
 
 
-	public function setTranslator(ITranslator $translator): void
+	public function setTranslator(Translator $translator): void
 	{
 		$this->translator = $translator;
 	}
@@ -153,7 +154,7 @@ abstract class BaseRenderer implements Renderer
 	}
 
 
-	private function getTranslator(): ITranslator
+	private function getTranslator(): Translator
 	{
 		if ($this->translator === null) {
 			throw new \RuntimeException('Translator service does not set. Did you call ->setTranslator()?');
