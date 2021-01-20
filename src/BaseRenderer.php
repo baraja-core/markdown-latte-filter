@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Baraja\Markdown;
 
 
+use Baraja\Url\Url;
 use Nette\Application\LinkGenerator;
 use Nette\Application\UI\InvalidLinkException;
 use Nette\Localization\Translator;
@@ -120,18 +121,7 @@ abstract class BaseRenderer implements Renderer
 
 	protected function resolveBaseUrl(): string
 	{
-		if ($this->baseUrl === null) {
-			if (($baseUrl = Helpers::getBaseUrl()) === null) {
-				throw new \LogicException(
-					'BaseUrl can not be null.' . "\n"
-					. 'To solve this issue: BaseUrl is automatically detected according to the current HTTP request. '
-					. 'In CLI mode (when there is no HTTP request), you need to manually define the BaseUrl by the setBaseUrl() method.'
-				);
-			}
-			$this->baseUrl = $baseUrl;
-		}
-
-		return $this->baseUrl;
+		return $this->baseUrl ?? Url::get()->getBaseUrl();
 	}
 
 
