@@ -134,7 +134,7 @@ abstract class BaseRenderer implements Renderer
 			. '>' . html_entity_decode(
 				(string) preg_replace_callback('/^(https?:\/\/[^\/]+)(.*)$/', fn (array $part): string => $part[1] . Strings::truncate($part[2], 32), strip_tags($url)),
 				ENT_QUOTES | ENT_HTML5,
-				'UTF-8'
+				'UTF-8',
 			)
 			. '</a>';
 	}
