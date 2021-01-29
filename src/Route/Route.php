@@ -32,8 +32,13 @@ final class Route
 	/**
 	 * @param mixed[] $params
 	 */
-	public function __construct(string $module = null, string $presenter = self::DEFAULT_PRESENTER, string $action = self::DEFAULT_ACTION, string $id = null, array $params = [])
-	{
+	public function __construct(
+		string $module = null,
+		string $presenter = self::DEFAULT_PRESENTER,
+		string $action = self::DEFAULT_ACTION,
+		string $id = null,
+		array $params = []
+	) {
 		$this->module = $module ?: null;
 		$this->presenterName = trim(Strings::firstUpper($presenter ?: self::DEFAULT_PRESENTER), '/');
 		$this->actionName = trim(Strings::firstLower($action ?: self::DEFAULT_ACTION), '/');
@@ -74,7 +79,7 @@ final class Route
 			$patternParser['presenter'],
 			$patternParser['action'],
 			$id,
-			$params
+			$params,
 		);
 	}
 
@@ -95,7 +100,7 @@ final class Route
 	{
 		$returnParams = array_merge(
 			$this->params,
-			$this->id ? ['id' => $this->id] : []
+			$this->id ? ['id' => $this->id] : [],
 		);
 
 		$return = Strings::firstUpper($this->presenterName) . ':' . $this->actionName;
@@ -117,7 +122,7 @@ final class Route
 	public function getPresenterName(bool $withModule = true): string
 	{
 		if ($withModule === true) {
-			$module = ($this->module === null || trim($this->module) === '')
+			$module = $this->module === null || trim($this->module) === ''
 				? 'Front:'
 				: $this->module . ':';
 

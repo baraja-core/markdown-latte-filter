@@ -32,17 +32,15 @@ final class CommonMarkRenderer extends BaseRenderer
 		if (isset($cache[$content]) === false) {
 			$html = $this->process(
 				$this->commonMarkConverter->get()->convertToHtml(
-					$this->beforeProcess($content)
-				)
+					$this->beforeProcess($content),
+				),
 			);
 
 			$baseUrl = $this->resolveBaseUrl();
 			$html = preg_replace_callback(
 				'/src="\/?((?:img|static)\/([^"]+))"/',
-				static function (array $match) use ($baseUrl): string {
-					return 'src="' . $baseUrl . '/' . $match[1] . '"';
-				},
-				$this->afterProcess($html)
+				static fn (array $match): string => 'src="' . $baseUrl . '/' . $match[1] . '"',
+				$this->afterProcess($html),
 			);
 
 			$cache[$content] = $html;

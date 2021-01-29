@@ -31,13 +31,13 @@ final class Markdown
 			} else {
 				throw new \InvalidArgumentException(
 					'Value can not be converted to string, '
-					. 'because object "' . \get_class($haystack) . '" does not contain "__toString" method.'
+					. 'because object "' . \get_class($haystack) . '" does not contain "__toString" method.',
 				);
 			}
 		}
 
 		return Html::el('div', ['class' => 'markdown'])->setHtml(
-			$this->commonMarkRenderer->render($haystack)
+			$this->commonMarkRenderer->render($haystack),
 		);
 	}
 }

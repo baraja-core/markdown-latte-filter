@@ -57,15 +57,13 @@ abstract class BaseRenderer implements Renderer
 		$content = (string) preg_replace(
 			'/\{\$(?:basePath|baseUrl)\}\/?/',
 			rtrim($baseUrl, '/') . '/',
-			$content
+			$content,
 		);
 
 		$content = (string) preg_replace_callback( // <a href="..."> HTML links
 			'/ href="\/(?<link>[^"]*)"/',
-			static function (array $match) use ($baseUrl): string {
-				return ' href="' . $baseUrl . '/' . $match['link'] . '"';
-			},
-			$content
+			static fn (array $match): string => ' href="' . $baseUrl . '/' . $match['link'] . '"',
+			$content,
 		);
 
 		$content = (string) preg_replace_callback( // n:href="..." Nette links
@@ -75,16 +73,16 @@ abstract class BaseRenderer implements Renderer
 					$route = Route::createByPattern($match['link']);
 
 					return 'href="' . $this->linkGenerator->link(
-							$route->getPresenterName(true) . ':' . $route->getActionName(),
-							$route->getParams()
-						) . '"';
+						$route->getPresenterName(true) . ':' . $route->getActionName(),
+						$route->getParams(),
+					) . '"';
 				} catch (InvalidLinkException | \InvalidArgumentException $e) {
 					trigger_error($e->getMessage());
 
 					return 'href="#INVALID_LINK"';
 				}
 			},
-			$content
+			$content,
 		);
 
 		$content = (string) preg_replace_callback( // URL inside text
@@ -96,23 +94,19 @@ abstract class BaseRenderer implements Renderer
 
 				return $match[1] . $this->renderLink(htmlspecialchars_decode(trim($match[2] ?? '')), $baseUrl);
 			},
-			$content
+			$content,
 		);
 
 		$content = (string) preg_replace_callback( // Translate macros
 			'/(\{_\})(?<haystack>.+?)(\{\/_\})/', // {_}hello{/_}
-			function (array $match): string {
-				return $this->getTranslator()->translate($match['haystack']);
-			},
-			$content
+			fn (array $match): string => $this->getTranslator()->translate($match['haystack']),
+			$content,
 		);
 
 		$content = (string) preg_replace_callback( // Alternative translate macros
 			'/\{_(?:(?<haystack>.*?))\}/', // {_hello}, {_'hello'}, {_"hello"}
-			function (array $match): string {
-				return $this->getTranslator()->translate(trim($match['haystack'], '\'"'));
-			},
-			$content
+			fn (array $match): string => $this->getTranslator()->translate(trim($match['haystack'], '\'"')),
+			$content,
 		);
 
 		return $content;
@@ -139,7 +133,9 @@ abstract class BaseRenderer implements Renderer
 			. ($external ? ' target="_blank" rel="nofollow"' : '')
 			. '>' . html_entity_decode(
 				(string) preg_replace_callback('/^(https?:\/\/[^\/]+)(.*)$/', fn (array $part): string => $part[1] . Strings::truncate($part[2], 32), strip_tags($url)),
-				ENT_QUOTES | ENT_HTML5, 'UTF-8')
+				ENT_QUOTES | ENT_HTML5,
+				'UTF-8'
+			)
 			. '</a>';
 	}
 
