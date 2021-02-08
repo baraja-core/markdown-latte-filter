@@ -34,7 +34,9 @@ final class Helpers
 			return (string) ($parser['domain'] ?? '');
 		}
 
-		throw new \InvalidArgumentException('URL "' . $url . '" is invalid.');
+		trigger_error('URL "' . $url . '" is invalid.');
+
+		return self::escapeHtmlAttr($url);
 	}
 
 
