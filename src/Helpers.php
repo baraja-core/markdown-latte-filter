@@ -27,16 +27,14 @@ final class Helpers
 	}
 
 
-	public static function parseDomain(string $url): string
+	public static function parseDomain(string $url): ?string
 	{
 		$domainPattern = '/^(?:https?:\/\/)?(?<subdomain>[^\/]*?)(?<domain>localhost|(?:\d{1,3}\.?){4}|(?:(?:[a-z0-9-]+)\.(?:[a-z0-9-]+)))(?:\/|$)/';
 		if (preg_match($domainPattern, strtolower($url), $parser)) {
 			return (string) ($parser['domain'] ?? '');
 		}
 
-		trigger_error('URL "' . $url . '" is invalid.');
-
-		return self::escapeHtmlAttr($url);
+		return null;
 	}
 
 

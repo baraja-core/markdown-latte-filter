@@ -121,7 +121,9 @@ abstract class BaseRenderer implements Renderer
 
 	protected function renderLink(string $url, string $baseUrl): string
 	{
-		$urlDomain = Helpers::parseDomain($url);
+		if (($urlDomain = Helpers::parseDomain($url)) === null) {
+			return $url;
+		}
 		$baseUrlDomain = Helpers::parseDomain($baseUrl);
 
 		$external = $urlDomain !== $baseUrlDomain && !\in_array($urlDomain, $this->safeDomains, true);
