@@ -19,11 +19,7 @@ final class Markdown
 	}
 
 
-	/**
-	 * @param string|object $haystack
-	 * @return Html
-	 */
-	public function __invoke($haystack): Html
+	public function __invoke(string|object $haystack): Html
 	{
 		if (is_object($haystack)) {
 			if (method_exists($haystack, '__toString')) {

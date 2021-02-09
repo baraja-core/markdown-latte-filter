@@ -51,7 +51,6 @@ final class Route
 
 	/**
 	 * @param string $pattern in format "[Module:]Presenter:action, id => 123, param => value, foo => bar"
-	 * @return self
 	 */
 	public static function createByPattern(string $pattern): self
 	{
@@ -145,10 +144,7 @@ final class Route
 	}
 
 
-	/**
-	 * @return mixed
-	 */
-	public function getId()
+	public function getId(): int|string|null
 	{
 		return $this->isNumericInt($this->id)
 			? (int) $this->id
@@ -162,7 +158,6 @@ final class Route
 	public function getParams(): array
 	{
 		$return = [];
-
 		foreach ($this->params as $key => $value) {
 			$return[$key] = $this->isNumericInt($value)
 				? (int) $value
@@ -173,14 +168,8 @@ final class Route
 	}
 
 
-	/**
-	 * Finds whether a value is an integer.
-	 *
-	 * @param mixed $value
-	 * @return bool
-	 */
-	private function isNumericInt($value): bool
+	private function isNumericInt(int|string|null $value): bool
 	{
-		return \is_int($value) || (\is_string($value) && preg_match('#^-?[\d]+\z#', $value));
+		return $value !== null && (\is_int($value) || (\is_string($value) && preg_match('#^-?[\d]+\z#', $value)));
 	}
 }
