@@ -9,11 +9,10 @@ use Nette\Utils\Strings;
 
 final class Route
 {
-	public const DEFAULT_PRESENTER = 'Homepage';
-
-	public const DEFAULT_ACTION = 'default';
-
-	public const DEFAULT_ROUTE = 'Homepage:default';
+	public const
+		DEFAULT_PRESENTER = 'Homepage',
+		DEFAULT_ACTION = 'default',
+		DEFAULT_ROUTE = 'Homepage:default';
 
 	private const PATTERN = '/^(?:(?<module>[A-Za-z]*):)?(?<presenter>[A-Za-z]*):(?<action>[A-Za-z]+)(?<params>\,*?.*?)$/';
 
@@ -168,7 +167,7 @@ final class Route
 	}
 
 
-	private function isNumericInt(int|string|null $value): bool
+	private function isNumericInt(int|string |null $value): bool
 	{
 		return $value !== null && (\is_int($value) || (\is_string($value) && preg_match('#^-?[\d]+\z#', $value)));
 	}

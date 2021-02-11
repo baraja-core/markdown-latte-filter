@@ -10,7 +10,7 @@ final class Helpers
 	/** @throws \Error */
 	public function __construct()
 	{
-		throw new \Error('Class ' . static::class . ' is static and cannot be instantiated.');
+		throw new \Error('Class ' . self::class . ' is static and cannot be instantiated.');
 	}
 
 
@@ -40,7 +40,7 @@ final class Helpers
 
 	public static function escapeHtmlAttr(string $s): string
 	{
-		if (strpos($s, '`') !== false && strpbrk($s, ' <>"\'') === false) {
+		if (str_contains($s, '`') === true && strpbrk($s, ' <>"\'') === false) {
 			$s .= ' '; // protection against innerHTML mXSS vulnerability nette/nette#1496
 		}
 

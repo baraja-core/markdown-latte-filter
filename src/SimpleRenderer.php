@@ -9,6 +9,6 @@ final class SimpleRenderer implements Renderer
 {
 	public function render(string $content): string
 	{
-		return htmlspecialchars($content, ENT_NOQUOTES | ENT_IGNORE, 'UTF-8');
+		return htmlspecialchars($content, ENT_NOQUOTES | ENT_IGNORE);
 	}
 }
