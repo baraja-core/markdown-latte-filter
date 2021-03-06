@@ -13,20 +13,16 @@ use Nette\Utils\Strings;
 
 abstract class BaseRenderer implements Renderer
 {
-	private LinkGenerator $linkGenerator;
-
-	private ?Translator $translator;
-
 	private ?string $baseUrl = null;
 
 	/** @var string[] */
 	private array $safeDomains = ['baraja.cz'];
 
 
-	public function __construct(LinkGenerator $linkGenerator, ?Translator $translator = null)
-	{
-		$this->linkGenerator = $linkGenerator;
-		$this->translator = $translator;
+	public function __construct(
+		private LinkGenerator $linkGenerator,
+		private ?Translator $translator = null
+	) {
 	}
 
 

@@ -16,13 +16,12 @@ final class CommonMarkRenderer extends BaseRenderer
 		'\)' => 'LATEX-R',
 	];
 
-	private ConverterAccessor $commonMarkConverter;
 
-
-	public function __construct(ConverterAccessor $converterAccessor, LinkGenerator $linkGenerator)
-	{
+	public function __construct(
+		private ConverterAccessor $commonMarkConverter,
+		LinkGenerator $linkGenerator
+	) {
 		parent::__construct($linkGenerator);
-		$this->commonMarkConverter = $converterAccessor;
 	}
 
 

@@ -10,12 +10,9 @@ use Nette\Utils\Html;
 
 final class Markdown
 {
-	private CommonMarkRenderer $commonMarkRenderer;
-
-
-	public function __construct(CommonMarkRenderer $commonMarkRenderer)
-	{
-		$this->commonMarkRenderer = $commonMarkRenderer;
+	public function __construct(
+		private CommonMarkRenderer $commonMarkRenderer
+	) {
 	}
 
 
