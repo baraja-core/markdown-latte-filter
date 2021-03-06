@@ -62,7 +62,7 @@ abstract class BaseRenderer implements Renderer
 
 		$content = (string) preg_replace_callback( // <a href="..."> HTML links
 			'/ href="\/(?<link>[^"]*)"/',
-			static fn (array $match): string => ' href="' . $baseUrl . '/' . $match['link'] . '"',
+			static fn(array $match): string => ' href="' . $baseUrl . '/' . $match['link'] . '"',
 			$content,
 		);
 
@@ -99,13 +99,13 @@ abstract class BaseRenderer implements Renderer
 
 		$content = (string) preg_replace_callback( // Translate macros
 			'/(\{_\})(?<haystack>.+?)(\{\/_\})/', // {_}hello{/_}
-			fn (array $match): string => $this->getTranslator()->translate($match['haystack']),
+			fn(array $match): string => $this->getTranslator()->translate($match['haystack']),
 			$content,
 		);
 
 		$content = (string) preg_replace_callback( // Alternative translate macros
 			'/\{_(?:(?<haystack>.*?))\}/', // {_hello}, {_'hello'}, {_"hello"}
-			fn (array $match): string => $this->getTranslator()->translate(trim($match['haystack'], '\'"')),
+			fn(array $match): string => $this->getTranslator()->translate(trim($match['haystack'], '\'"')),
 			$content,
 		);
 
@@ -134,7 +134,7 @@ abstract class BaseRenderer implements Renderer
 		return '<a href="' . Helpers::escapeHtmlAttr($safeUrl) . '"'
 			. ($external ? ' target="_blank" rel="nofollow"' : '')
 			. '>' . html_entity_decode(
-				(string) preg_replace_callback('/^(https?:\/\/[^\/]+)(.*)$/', fn (array $part): string => $part[1] . Strings::truncate($part[2], 32), strip_tags($url)),
+				(string) preg_replace_callback('/^(https?:\/\/[^\/]+)(.*)$/', fn(array $part): string => $part[1] . Strings::truncate($part[2], 32), strip_tags($url)),
 				ENT_QUOTES | ENT_HTML5,
 				'UTF-8',
 			)

@@ -39,7 +39,7 @@ final class CommonMarkRenderer extends BaseRenderer
 			$baseUrl = $this->resolveBaseUrl();
 			$html = preg_replace_callback(
 				'/src="\/?((?:img|static)\/([^"]+))"/',
-				static fn (array $match): string => 'src="' . $baseUrl . '/' . $match[1] . '"',
+				static fn(array $match): string => 'src="' . $baseUrl . '/' . $match[1] . '"',
 				$this->afterProcess($html),
 			);
 
