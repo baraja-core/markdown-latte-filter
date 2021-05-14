@@ -25,8 +25,9 @@ final class CommonMarkRenderer extends BaseRenderer
 	}
 
 
-	public function render(string $content): string
+	public function render(string|\Stringable $content): string
 	{
+		$content = (string) $content;
 		static $cache = [];
 		if (isset($cache[$content]) === false) {
 			$html = $this->process(
