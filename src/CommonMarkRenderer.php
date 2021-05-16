@@ -55,6 +55,8 @@ final class CommonMarkRenderer extends BaseRenderer
 		foreach (self::$helpers as $key => $value) {
 			$haystack = str_replace($key, $value, $haystack);
 		}
+		$haystack = (string) preg_replace('/([a-z"])>{2,}/', '$1>', $haystack);
+		$haystack = (string) preg_replace('/<{2,}([a-z\/])/', '<$1', $haystack);
 
 		return $haystack;
 	}
