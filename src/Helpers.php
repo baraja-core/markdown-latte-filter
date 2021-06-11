@@ -19,8 +19,8 @@ final class Helpers
 	 */
 	public static function safeUrl(string $s): string
 	{
-		if (strncmp(strtolower($s), 'http', 4) !== 0) {
-			$s = 'http://' . $s;
+		if (str_starts_with(strtolower($s), 'http') === false) {
+			$s = 'https://' . $s;
 		}
 
 		return preg_match('~^(?:(?:https?|ftp)://[^@]+(?:/.*)?|(?:mailto|tel|sms):.+|[/?#].*|[^:]+)$~Di', $s) ? $s : '';
