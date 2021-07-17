@@ -81,14 +81,34 @@ abstract class BaseRenderer implements Renderer
 			$content,
 		);
 
+		$ignoreContents = [];
+		$content = (string) preg_replace_callback(
+			'/((?:<pre>)?<code(?:\s+[^>]+|)>(?:.|\n)*?<\/code\s*>(?:<\/pre>)?)/',
+			function (array $match) use (&$ignoreContents): string {
+				$ignoreContents[] = $match[0] ?? '';
+
+				return '[[ignore-content-' . (count($ignoreContents) - 1) . ']]';
+			},
+			$content,
+		);
+
 		$content = (string) preg_replace_callback( // URL inside text
 			'/(.|\n|^)((?i)\b(?:(?:https?:\/\/|www\d{0,3}[.]|[a-z0-9.\-]+[.][a-z]{2,4}\/)(?:[^\s()<>]+|\(([^\s()<>]+|(\([^\s()<>]+\)))*\))+(?:\(([^\s()<>]+|(\([^\s()<>]+\)))*\)|[^\s`!()\[\]{};:\'\\\\".,<>?«»“”‘’])))/u',
 			function (array $match) use ($baseUrl): string {
 				if ($match[1] === '"' || $match[1] === '\'') { // ignore inside <a href=" attribute
 					return $match[0];
 				}
+				bdump($match);
 
 				return $match[1] . $this->renderLink(htmlspecialchars_decode(trim($match[2] ?? '')), $baseUrl);
+			},
+			$content,
+		);
+
+		$content = (string) preg_replace_callback(
+			'/\[\[ignore-content-(\d+)]]/',
+			function (array $match) use (&$ignoreContents): string {
+				return $ignoreContents[(int) ($match[1] ?? 0)] ?? '';
 			},
 			$content,
 		);
@@ -117,19 +137,21 @@ abstract class BaseRenderer implements Renderer
 
 	protected function renderLink(string $url, string $baseUrl): string
 	{
-		if (($urlDomain = Helpers::parseDomain($url)) === null) {
+		$urlDomain = Helpers::parseDomain($url);
+		if ($urlDomain === null) {
 			return $url;
 		}
 		$baseUrlDomain = Helpers::parseDomain($baseUrl);
-
-		$external = $urlDomain !== $baseUrlDomain && !\in_array($urlDomain, $this->safeDomains, true);
-		if (($safeUrl = Helpers::safeUrl($url)) === '') {
+		$external = $urlDomain !== $baseUrlDomain && !in_array($urlDomain, $this->safeDomains, true);
+		$safeUrl = Helpers::safeUrl($url);
+		if ($safeUrl === '') {
 			trigger_error('Given URL is not safe, because string "' . $url . '" given.');
 		}
 
 		return '<a href="' . Helpers::escapeHtmlAttr($safeUrl) . '"'
 			. ($external ? ' target="_blank" rel="nofollow"' : '')
-			. '>' . html_entity_decode(
+			. '>'
+			. html_entity_decode(
 				(string) preg_replace_callback('/^(https?:\/\/[^\/]+)(.*)$/', fn(array $part): string => $part[1] . Strings::truncate($part[2], 32), strip_tags($url)),
 				ENT_QUOTES | ENT_HTML5,
 				'UTF-8',
