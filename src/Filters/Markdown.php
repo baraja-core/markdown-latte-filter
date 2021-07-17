@@ -24,7 +24,7 @@ final class Markdown
 			} else {
 				throw new \InvalidArgumentException(
 					'Value can not be converted to string, '
-					. 'because object "' . \get_class($haystack) . '" does not contain "__toString" method.',
+					. 'because object "' . $haystack::class . '" does not contain "__toString" method.',
 				);
 			}
 		}
