@@ -87,6 +87,7 @@ abstract class BaseRenderer implements Renderer
 			function (array $match) use (&$ignoreContents): string {
 				$ignoreContents[] = $match[0] ?? '';
 
+				/** @phpstan-ignore-next-line */
 				return '[[ignore-content-' . (count($ignoreContents) - 1) . ']]';
 			},
 			$content,
@@ -98,7 +99,6 @@ abstract class BaseRenderer implements Renderer
 				if ($match[1] === '"' || $match[1] === '\'') { // ignore inside <a href=" attribute
 					return $match[0];
 				}
-				bdump($match);
 
 				return $match[1] . $this->renderLink(htmlspecialchars_decode(trim($match[2] ?? '')), $baseUrl);
 			},
