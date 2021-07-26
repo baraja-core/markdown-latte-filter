@@ -14,7 +14,7 @@
 		"nette/utils": "^3.2",
 		"nette/application": "^3.1",
 		"nette/di": "^3.0",
-		"league/commonmark": "^1.5",
+		"league/commonmark": "^2.0",
 		"baraja-core/url": "^1.1"
 	},
 	"require-dev": {
