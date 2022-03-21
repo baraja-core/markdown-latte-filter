@@ -21,7 +21,7 @@ abstract class BaseRenderer implements Renderer
 
 	public function __construct(
 		private LinkGenerator $linkGenerator,
-		private ?Translator $translator = null
+		private ?Translator $translator = null,
 	) {
 	}
 

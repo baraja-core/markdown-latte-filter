@@ -9,7 +9,6 @@ use Nette\Application\LinkGenerator;
 
 final class CommonMarkRenderer extends BaseRenderer
 {
-
 	/** @var string[] */
 	private static array $helpers = [
 		'\(' => 'LATEX-L',
@@ -19,7 +18,7 @@ final class CommonMarkRenderer extends BaseRenderer
 
 	public function __construct(
 		private ConverterAccessor $commonMarkConverter,
-		LinkGenerator $linkGenerator
+		LinkGenerator $linkGenerator,
 	) {
 		parent::__construct($linkGenerator);
 	}

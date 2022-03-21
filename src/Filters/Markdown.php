@@ -11,7 +11,7 @@ use Nette\Utils\Html;
 final class Markdown
 {
 	public function __construct(
-		private CommonMarkRenderer $commonMarkRenderer
+		private CommonMarkRenderer $commonMarkRenderer,
 	) {
 	}
 
