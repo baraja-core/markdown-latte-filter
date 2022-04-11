@@ -84,7 +84,7 @@ abstract class BaseRenderer implements Renderer
 		$ignoreContents = [];
 		$content = (string) preg_replace_callback(
 			'/((?:<pre>)?<code(?:\s+[^>]+|)>(?:.|\n)*?<\/code\s*>(?:<\/pre>)?)/',
-			function (array $match) use (&$ignoreContents): string {
+			static function (array $match) use (&$ignoreContents): string {
 				$ignoreContents[] = $match[0] ?? '';
 
 				/** @phpstan-ignore-next-line */
@@ -107,7 +107,8 @@ abstract class BaseRenderer implements Renderer
 
 		$content = (string) preg_replace_callback(
 			'/\[\[ignore-content-(\d+)]]/',
-			function (array $match) use (&$ignoreContents): string {
+			static function (array $match) use (&$ignoreContents): string {
+				/** @phpstan-ignore-next-line */
 				return $ignoreContents[(int) ($match[1] ?? 0)] ?? '';
 			},
 			$content,

@@ -9,10 +9,11 @@ use Nette\Utils\Strings;
 
 final class Route
 {
-	public const
-		DEFAULT_PRESENTER = 'Homepage',
-		DEFAULT_ACTION = 'default',
-		DEFAULT_ROUTE = 'Homepage:default';
+	public const DEFAULT_PRESENTER = 'Homepage';
+
+	public const DEFAULT_ACTION = 'default';
+
+	public const DEFAULT_ROUTE = 'Homepage:default';
 
 	private const PATTERN = '/^(?:(?<module>[A-Za-z]*):)?(?<presenter>[A-Za-z]*):(?<action>[A-Za-z]+)(?<params>\,*?.*?)$/';
 
@@ -38,11 +39,11 @@ final class Route
 		string $id = null,
 		array $params = [],
 	) {
-		$this->module = $module ?: null;
-		$this->presenterName = trim(Strings::firstUpper($presenter ?: self::DEFAULT_PRESENTER), '/');
-		$this->actionName = trim(Strings::firstLower($action ?: self::DEFAULT_ACTION), '/');
-		$this->presenterName = $this->presenterName ?: self::DEFAULT_PRESENTER;
-		$this->actionName = $this->actionName ?: self::DEFAULT_ACTION;
+		$this->module = $module !== '' ? $module : null;
+		$presenterName = trim(Strings::firstUpper($presenter !== '' ? $presenter : self::DEFAULT_PRESENTER), '/');
+		$actionName = trim(Strings::firstLower($action !== '' ? $action : self::DEFAULT_ACTION), '/');
+		$this->presenterName = $presenterName !== '' ? $presenterName : self::DEFAULT_PRESENTER;
+		$this->actionName = $actionName !== '' ? $actionName : self::DEFAULT_ACTION;
 		$this->id = $id !== '' && $id !== null ? trim($id, '/') : null;
 		$this->params = $params;
 	}
@@ -53,14 +54,14 @@ final class Route
 	 */
 	public static function createByPattern(string $pattern): self
 	{
-		if (!preg_match(self::PATTERN, trim($pattern, ':'), $patternParser)) {
+		if (preg_match(self::PATTERN, trim($pattern, ':'), $patternParser) !== 1) {
 			throw new \InvalidArgumentException('Invalid link "' . htmlspecialchars($pattern) . '". Did you mean format "Presenter:action" or "Module:Presenter:action"?');
 		}
 
 		$id = null;
 		$params = [];
 		foreach (explode(',', trim($patternParser['params'], ', ')) as $param) {
-			if (preg_match('/^(?<key>[\'"]?\w+[\'"]?)\s*=>\s*(?<value>.*)$/', trim($param), $paramParser)) {
+			if (preg_match('/^(?<key>[\'"]?\w+[\'"]?)\s*=>\s*(?<value>.*)$/', trim($param), $paramParser) === 1) {
 				$paramKey = trim($paramParser['key'], '\'"');
 				if ($paramKey === 'id') {
 					$id = $paramParser['value'];
@@ -98,11 +99,10 @@ final class Route
 	{
 		$returnParams = array_merge(
 			$this->params,
-			$this->id ? ['id' => $this->id] : [],
+			$this->id !== null ? ['id' => $this->id] : [],
 		);
 
 		$return = Strings::firstUpper($this->presenterName) . ':' . $this->actionName;
-
 		foreach ($returnParams as $paramKey => $paramValue) {
 			$return .= ', ' . $paramKey . ' => ' . $paramValue;
 		}
@@ -167,8 +167,8 @@ final class Route
 	}
 
 
-	private function isNumericInt(int|string |null $value): bool
+	private function isNumericInt(mixed $value): bool
 	{
-		return $value !== null && (\is_int($value) || (\is_string($value) && preg_match('#^-?[\d]+\z#', $value)));
+		return is_int($value) || (is_string($value) && preg_match('#^-?[\d]+\z#', $value) === 1);
 	}
 }
