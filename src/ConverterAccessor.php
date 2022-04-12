@@ -6,7 +6,6 @@ namespace Baraja\Markdown;
 
 
 use League\CommonMark\CommonMarkConverter;
-use League\CommonMark\Environment;
 use League\CommonMark\Extension\ExtensionInterface;
 use League\CommonMark\Extension\Table\TableExtension;
 
@@ -45,11 +44,12 @@ final class ConverterAccessor
 
 	private function createInstance(): CommonMarkConverter
 	{
-		$environment = Environment::createCommonMarkEnvironment();
+		$converter = new CommonMarkConverter($this->config);
+		$environment = $converter->getEnvironment();
 		foreach ($this->extensions as $extension) {
 			$environment->addExtension($extension);
 		}
 
-		return new CommonMarkConverter($this->config, $environment);
+		return $converter;
 	}
 }

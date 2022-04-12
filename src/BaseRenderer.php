@@ -15,7 +15,7 @@ abstract class BaseRenderer implements Renderer
 {
 	private ?string $baseUrl = null;
 
-	/** @var string[] */
+	/** @var array<int, string> */
 	private array $safeDomains = ['baraja.cz'];
 
 
@@ -39,7 +39,7 @@ abstract class BaseRenderer implements Renderer
 
 
 	/**
-	 * @param string[] $safeDomains
+	 * @param array<int, string> $safeDomains
 	 */
 	public function setSafeDomains(array $safeDomains): void
 	{

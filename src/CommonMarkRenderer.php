@@ -9,7 +9,7 @@ use Nette\Application\LinkGenerator;
 
 final class CommonMarkRenderer extends BaseRenderer
 {
-	/** @var string[] */
+	/** @var array<string, string> */
 	private static array $helpers = [
 		'\(' => 'LATEX-L',
 		'\)' => 'LATEX-R',
@@ -30,15 +30,16 @@ final class CommonMarkRenderer extends BaseRenderer
 		static $cache = [];
 		if (isset($cache[$content]) === false) {
 			$html = $this->process(
-				$this->commonMarkConverter->get()->convertToHtml(
-					$this->beforeProcess($content),
-				),
+				$this->commonMarkConverter
+					->get()
+					->convert($this->beforeProcess($content))
+					->getContent(),
 			);
 
 			$baseUrl = $this->resolveBaseUrl();
 			$html = preg_replace_callback(
 				'/src="\/?((?:img|static)\/([^"]+))"/',
-				static fn(array $match): string => 'src="' . $baseUrl . '/' . $match[1] . '"',
+				static fn(array $match): string => sprintf('src="%s/%s"', $baseUrl, $match[1]),
 				$this->afterProcess($html),
 			);
 
