@@ -15,7 +15,8 @@
 		"nette/application": "^3.1",
 		"nette/di": "^3.0",
 		"league/commonmark": "^2.0",
-		"baraja-core/url": "^1.1"
+		"baraja-core/url": "^1.1",
+		"baraja-core/markdown": "^1.0"
 	},
 	"require-dev": {
 		"tracy/tracy": "^2.8",

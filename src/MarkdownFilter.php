@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Baraja\Markdown\Filter;
+namespace Baraja\MarkdownLatteFilter;
 
 
 use Baraja\Markdown\CommonMarkRenderer;
 use Nette\Utils\Html;
 
-final class Markdown
+final class MarkdownFilter
 {
 	public function __construct(
 		private CommonMarkRenderer $commonMarkRenderer,
@@ -19,12 +19,14 @@ final class Markdown
 	public function __invoke(string|object $haystack): Html
 	{
 		if (is_object($haystack)) {
-			if (method_exists($haystack, '__toString')) {
+			if ($haystack instanceof \Stringable) {
 				$haystack = (string) $haystack;
 			} else {
 				throw new \InvalidArgumentException(
-					'Value can not be converted to string, '
-					. 'because object "' . $haystack::class . '" does not contain "__toString" method.',
+					sprintf(
+						'Value can not be converted to string, because object "%s" is not stringable.',
+						$haystack::class,
+					),
 				);
 			}
 		}
