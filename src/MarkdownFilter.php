@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Baraja\MarkdownLatteFilter;
 
 
-use Baraja\Markdown\CommonMarkRenderer;
+use Baraja\Markdown\Markdown;
 use Nette\Utils\Html;
 
 final class MarkdownFilter
 {
 	public function __construct(
-		private CommonMarkRenderer $commonMarkRenderer,
+		private Markdown $markdown,
 	) {
 	}
 
@@ -32,7 +32,7 @@ final class MarkdownFilter
 		}
 
 		return Html::el('div', ['class' => 'markdown'])->setHtml(
-			$this->commonMarkRenderer->render($haystack),
+			$this->markdown->render($haystack),
 		);
 	}
 }

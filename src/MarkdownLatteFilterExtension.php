@@ -15,6 +15,9 @@ final class MarkdownLatteFilterExtension extends CompilerExtension
 	{
 		$builder = $this->getContainerBuilder();
 
+		$builder->addDefinition($this->prefix('markdownFilter'))
+			->setFactory(MarkdownFilter::class);
+
 		/** @var FactoryDefinition $latteFactory */
 		$latteFactory = $builder->getDefinitionByType(LatteFactory::class);
 		$latteFactory->getResultDefinition()
