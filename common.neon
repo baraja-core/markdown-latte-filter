@@ -1,2 +1,2 @@
 extensions:
-	markdownLatteFilter: Baraja\Markdown\MarkdownLatteFilterExtension
+	markdownLatteFilter: Baraja\MarkdownLatteFilter\MarkdownLatteFilterExtension
