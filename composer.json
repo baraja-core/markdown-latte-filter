@@ -10,8 +10,8 @@
 	],
 	"require": {
 		"php": "^8.0",
-		"latte/latte": "^2.9",
-		"nette/utils": "^3.2",
+		"latte/latte": "^2.9 || ^3.0",
+		"nette/utils": "^3.2 || ^4.0",
 		"nette/application": "^3.1",
 		"nette/di": "^3.0",
 		"league/commonmark": "^2.0",
